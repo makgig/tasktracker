@@ -186,12 +186,14 @@ func (r *RepeatRule) calculateDayRule(now, base time.Time) (time.Time, error) {
 
 	// Если базовая дата раньше текущей
 	if next.Before(now) {
-		// Точный расчет следующей даты с учетом интервала
-		for next.Before(now) {
-			next = next.AddDate(0, 0, days)
-		}
+		// Рассчитываем количество интервалов, которые нужно пропустить
+		daysSinceBase := int(now.Sub(base).Hours() / 24)
+		intervalsToSkip := (daysSinceBase / days) + 1
+
+		// Добавляем пропущенные интервалы
+		next = next.AddDate(0, 0, intervalsToSkip*days)
 	} else {
-		// Если базовая дата еще не наступила
+		// Если базовая дата еще не наступила или равна текущей
 		next = next.AddDate(0, 0, days)
 	}
 

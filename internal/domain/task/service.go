@@ -44,7 +44,7 @@ func (s *Service) CreateTask(task *Task) error {
 		return fmt.Errorf("некорректная дата: %w", err)
 	}
 
-	if task.Date <= today && task.Repeat != "" {
+	if task.Date < today && task.Repeat != "" {
 		if task.Repeat == "d 1" {
 			task.Date = today
 		} else {
